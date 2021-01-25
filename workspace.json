@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "projects": {
+    "stargazers": {
+      "root": "apps/stargazers",
+      "sourceRoot": "apps/stargazers/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/stargazers",
+            "index": "apps/stargazers/src/index.html",
+            "main": "apps/stargazers/src/main.tsx",
+            "polyfills": "apps/stargazers/src/polyfills.ts",
+            "tsConfig": "apps/stargazers/tsconfig.app.json",
+            "assets": [
+              "apps/stargazers/src/favicon.ico",
+              "apps/stargazers/src/assets"
+            ],
+            "styles": [],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/stargazers/src/environments/environment.ts",
+                  "with": "apps/stargazers/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "stargazers:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "stargazers:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/stargazers/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/stargazers"],
+          "options": {
+            "jestConfig": "apps/stargazers/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "stargazers-e2e": {
+      "root": "apps/stargazers-e2e",
+      "sourceRoot": "apps/stargazers-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/stargazers-e2e/cypress.json",
+            "tsConfig": "apps/stargazers-e2e/tsconfig.e2e.json",
+            "devServerTarget": "stargazers:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "stargazers:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/stargazers-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "styled-components"
+      },
+      "library": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "stargazers"
+}
