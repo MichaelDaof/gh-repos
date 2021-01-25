@@ -6,8 +6,6 @@ import {
   AppBar as MuiAppBar,
 } from '@material-ui/core';
 
-import star from './star.svg';
-
 export default function AppBar() {
   return (
     <MuiAppBar color="primary" style={{ backgroundColor: '#2196f3' }}>
@@ -21,7 +19,7 @@ export default function AppBar() {
         <Box width="400px">
           <Typography variant="h4">GitHub Repos</Typography>
         </Box>
-        <a href="https://www.github.com" target="blank">
+        <a href="https://github.com/MichaelDaof/gh-repos" target="blank">
           <img
             src="assets/Octocat.jpg"
             alt="octocat"
