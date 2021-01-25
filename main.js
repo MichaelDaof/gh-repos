@@ -52,6 +52,10 @@ function App() {
       setPageCount(totalPages);
     }
   }, [reposResponse.total_count, pageLimit]);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    setSearchValue('');
+    setPage(1);
+  }, [user]);
 
   const renderPropPaginationTable = repo => {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PaginationTable__WEBPACK_IMPORTED_MODULE_4__["PaginationRow"], {
@@ -86,10 +90,7 @@ function App() {
       value: login
     })),
     onChange: setSearchValue,
-    onSubmit: input => {
-      setUser(input);
-      setSearchValue('');
-    }
+    onSubmit: setUser
   }), reposError ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ErrorMsg__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: `Failed to fetch repos for "${user}". May have reached rate limit.`
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Box"], {
@@ -238,7 +239,8 @@ function PaginationTable({
   page
 }) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Box"], {
-    width: "100%"
+    width: "100%",
+    "data-testid": "pagination-table-container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Box"], {
     width: "100%",
     display: "flex",
@@ -246,6 +248,7 @@ function PaginationTable({
     justifyContent: "center",
     alignItems: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_lab_Pagination__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    "data-testid": "pagination-controls",
     count: pageCount,
     page: page,
     color: "secondary",
@@ -339,7 +342,8 @@ function SearchInput({
     display: "flex",
     width: "100%",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    "data-testid": "search-dropdown"
   }, dropdown.map((item, i) => {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Box"], {
       key: item.id,
@@ -352,7 +356,8 @@ function SearchInput({
       alignItems: "center",
       onClick: e => {
         onSubmit(item.value);
-      }
+      },
+      "data-testid": `search-dropdown-item-${i}`
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Box"], {
       fontSize: "30px",
       width: "80%",
@@ -451,6 +456,7 @@ function useGithubUsers(user, debounce) {
   const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     let current = true;
+    setError(null);
 
     if (user) {
       Object(_github_services__WEBPACK_IMPORTED_MODULE_1__["getGithubUsers"])(user).then(res => {
@@ -493,6 +499,7 @@ function useGithubUserRepos({
   const [loading, setLoading] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(true);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     let current = true;
+    setError(null);
 
     if (user) {
       Object(_github_services__WEBPACK_IMPORTED_MODULE_1__["getGithubUserRepos"])({
@@ -511,7 +518,6 @@ function useGithubUserRepos({
           setResponse(data);
         }
       }).catch(e => {
-        console.log(e);
         setError(e);
         setResponse({
           items: []
