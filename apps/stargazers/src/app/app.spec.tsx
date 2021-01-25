@@ -82,7 +82,7 @@ describe('App', () => {
     spy.mockRestore()
   });
 
-  it('should pass correct props to pagination when page changes', async () => {
+  it('should calculate correct number of pages for pagination', async () => {
     const { container } = render(<App />)
     const searchBar = screen.getByPlaceholderText(/Search/)
     fireEvent.change(searchBar, {
@@ -90,11 +90,12 @@ describe('App', () => {
     })
     fireEvent.submit(searchBar)
     await waitFor(() => screen.getByTestId('pagination-controls'))
+    const totalPages = Math.ceil(mockUserRepoResponse.total_count / 10)
     const renderedPaginationControls = screen.getByTestId('pagination-controls')
     const paginationButtons = renderedPaginationControls.querySelectorAll('ul > li')
     const lastPageButtonPosition = paginationButtons.length - 2;
     const lastPageButton = paginationButtons[lastPageButtonPosition]
-    expect(lastPageButton.textContent).toBe('12')
+    expect(lastPageButton.textContent).toBe(totalPages.toString())
   });
   it.todo('should call Repo API when page changes')
 });
