@@ -1,3 +1,3 @@
 var ghpages = require('gh-pages');
  
-ghpages.publish('dist/apps', function(err) {});
+ghpages.publish('dist/apps/stargazers', function(err) {});
